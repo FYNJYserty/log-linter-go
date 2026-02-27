@@ -1,4 +1,4 @@
-module go.mod
+module github.com/FYNJYserty/log-linter-go
 
 go 1.25.2
 
