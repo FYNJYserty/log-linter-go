@@ -27,6 +27,7 @@ func TestContainsSensitiveData(t *testing.T) {
 		{"request completed", false},
 		{"database query executed", false},
 		{"token validated", false},
+		{"token: 1233qwee", true},
 		{"authorization header provided", false},
 		{"api request successful", false},
 	}

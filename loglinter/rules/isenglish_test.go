@@ -4,12 +4,15 @@ import "testing"
 
 func TestIsEnglish(t *testing.T) {
 	testCases := []testCase{
-		{"This is an English message.", false},
+		{"This is an English message.", true},
 		{"Сообщение на русском языке", false},
 		{"Message with numbers 12345", true},
-		{"Message with special characters !@#$%^&*()", false},
+		{"Message_with_underscore=42", true},
+		{"Message-with-dash:ok", true},
+		{"Message with special characters !@#$%^&*()", true},
 		{"Mixed message: English and русский.", false},
-		{"server started! 🚀", false},
+		{"server started! ", true},
+		{"server started! 🚀", true},
 	}
 
 	for _, tc := range testCases {

@@ -1,0 +1,11 @@
+version: "2"
+
+run:
+  plugins:
+    - name: loglinter
+      # use absolute path to ensure golangci-lint can locate it
+      path: /Users/fynjy/Desktop/Programming/log-linter-go/plugin/loglinter.so
+
+linters:
+  enable:
+    - loglinter

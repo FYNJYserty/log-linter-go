@@ -8,12 +8,39 @@ import (
 )
 
 func test() {
+	logger, _ := zap.NewDevelopment()
+	defer logger.Sync()
+
+	// Log messages
+	// Отрицательное тестирование
 	log.Println("This is a log")
 	log.Println("Bad message!")
+	log.Fatalf("Русский лог с заглавной")
+	log.Println("пример лога!")
+	// Поизитвное тестирование
+	log.Println("server started")
+	log.Println("connection failed")
+	log.Println("something went wrong")
 
+	// Slog messages
+	// Отрицательное тестирование
 	slog.Info("This is an error message slog")
-
 	slog.Debug("api_key=sk_live_abcd1234")
+	slog.Info("user password: password123")
+	slog.Debug("token: 1233qwee")
+	// Поизитвное тестирование
+	slog.Info("user authenticated successfully")
+	slog.Error("api request completed")
+	slog.Info("token validated")
 
-	zap.L().Info("This is standard library logging")
+	// Zap messages
+	// Отрицательное тестирование
+	logger.Info("This is standard library logging")
+	logger.Debug("server started! 🚀")
+	logger.Info("connection failed!!!")
+	logger.Debug("warning: something went wrong...")
+	// Поизитвное тестирование
+	logger.Error("failed to connect to database")
+	logger.Debug("failed to connect to database")
+	logger.Info("starting server on port 8080")
 }

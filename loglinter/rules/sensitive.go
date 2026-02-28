@@ -9,6 +9,7 @@ import (
 var sensitiveKeywords = []string{
 	"password",
 	"passwd",
+	// plain "token" removed, rely on pattern matching with punctuation
 	"pwd",
 	"api_key",
 	"apikey",
@@ -40,7 +41,10 @@ func ContainsSensitiveData(message string) bool {
 	}
 
 	sensitivePatterns := []string{
-		`(?i)(password|passwd|pwd|api[_-]?key|secret|credential|access[_-]?token|refresh[_-]?token|bearer|private[_-]?key)\s*[:=]`,
+		// patterns capture keywords followed by ':' or '='. include plain
+		// "token" here so that "token: ..." or "token = ..." triggers the
+		// detection while "token validated" does not.
+		`(?i)(token|password|passwd|pwd|api[_-]?key|secret|credential|access[_-]?token|refresh[_-]?token|bearer|private[_-]?key)\s*[:=]`,
 	}
 
 	for _, pattern := range sensitivePatterns {

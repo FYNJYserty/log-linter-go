@@ -2,8 +2,7 @@ package rules
 
 import "regexp"
 
-// Функция проверки на английский язык через регулярные выражения
 func IsEnglish(message string) bool {
-	var isEnglishRegex = regexp.MustCompile(`^[a-zA-Z0-9\s]+$`)
+	var isEnglishRegex = regexp.MustCompile(`^[\p{Latin}\p{N}\p{Zs}\p{P}\p{S}]+$`)
 	return isEnglishRegex.MatchString(message)
 }
