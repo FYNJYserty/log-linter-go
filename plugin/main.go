@@ -1,11 +1,11 @@
 package main
 
 import (
-	"golang.org/x/tools/go/analysis/unitchecker"
+	"golang.org/x/tools/go/analysis"
 
 	"github.com/FYNJYserty/log-linter-go/loglinter"
 )
 
-func main() {
-	unitchecker.Main(loglinter.Analyzer)
+var AnalyzerPlugin = map[string]*analysis.Analyzer{
+	"loglinter": loglinter.Analyzer,
 }

@@ -1,0 +1,50 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, master, develop ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        go-version: [1.22, 1.25]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: ${{ matrix.go-version }}
+
+      - name: Print Go version
+        run: go version
+
+      - name: Cache Go modules
+        uses: actions/cache@v3
+        with:
+          path: |-
+            ~/.cache/go-build
+            # Go modules cache
+            ${{ github.workspace }}/pkg/mod
+          key: ${{ runner.os }}-go-${{ matrix.go-version }}-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-${{ matrix.go-version }}-
+
+      - name: Run unit tests in root module
+        run: |
+          go test -v ./...
+      
+      - name: Build binary file for release
+        run: |
+          go build -o ./build/mylinter ./cmd/main.go
+
+      - name: Build plugin
+        run: |
+          cd plugin
+          go build -buildmode=plugin -o loglinter.so ./...

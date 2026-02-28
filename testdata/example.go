@@ -7,7 +7,7 @@ import (
 	"go.uber.org/zap"
 )
 
-func test() {
+func main() {
 	logger, _ := zap.NewDevelopment()
 	defer logger.Sync()
 
