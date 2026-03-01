@@ -1,8 +1,15 @@
 package rules
 
-import "testing"
+import (
+	"testing"
+	"github.com/FYNJYserty/log-linter-go/loglinter/config"
+)
 
 func TestContainsSensitiveData(t *testing.T) {
+	// Load configuration before running tests
+	if err := config.LoadConfig("../../.golangci.yml"); err != nil {
+		t.Fatalf("Failed to load config: %v", err)
+	}
 	testCases := []struct {
 		msg      string
 		expected bool

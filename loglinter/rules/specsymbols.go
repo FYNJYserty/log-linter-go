@@ -8,7 +8,7 @@ import (
 
 // Проверка наличия специальных символов/эмодзи в сообщении
 func IsNoSpecSymbols(message string) bool {
-	var specialSymbolsRegex = regexp.MustCompile(`[!@#$%^&*(),.?":{}|<>]`)
+	var specialSymbolsRegex = regexp.MustCompile(`[!@#$%^&*(),.?":{}|<>=]`)
 	if gomoji.ContainsEmoji(message) || specialSymbolsRegex.MatchString(message) {
 		return false
 	}

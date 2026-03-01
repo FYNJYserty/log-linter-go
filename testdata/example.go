@@ -24,7 +24,6 @@ func main() {
 
 	// Slog messages
 	// Отрицательное тестирование
-	slog.Info("This is an error message slog")
 	slog.Debug("api_key=sk_live_abcd1234")
 	slog.Info("user password: password123")
 	slog.Debug("token: 1233qwee")
@@ -35,7 +34,6 @@ func main() {
 
 	// Zap messages
 	// Отрицательное тестирование
-	logger.Info("This is standard library logging")
 	logger.Debug("server started! 🚀")
 	logger.Info("connection failed!!!")
 	logger.Debug("warning: something went wrong...")

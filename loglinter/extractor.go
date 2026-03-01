@@ -96,11 +96,13 @@ func extractFromSlog(call *ast.CallExpr, pass *analysis.Pass) *LogCall {
 
 	// Для slog первый аргумент - это сообщение
 	if len(call.Args) > 0 {
-		if msgExpr := getStringLiteral(call.Args[0]); msgExpr != "" {
+		if msgExpr, litPos, litEnd := getStringLiteral(call.Args[0]); msgExpr != "" {
 			return &LogCall{
 				Pos:      call.Pos(),
 				Message:  msgExpr,
 				Function: method,
+				LitPos:   litPos,
+				LitEnd:   litEnd,
 			}
 		}
 	}
@@ -114,11 +116,13 @@ func extractFromZap(call *ast.CallExpr, pass *analysis.Pass) *LogCall {
 	method := selExpr.Sel.Name
 
 	if len(call.Args) > 0 {
-		if msgExpr := getStringLiteral(call.Args[0]); msgExpr != "" {
+		if msgExpr, litPos, litEnd := getStringLiteral(call.Args[0]); msgExpr != "" {
 			return &LogCall{
 				Pos:      call.Pos(),
 				Message:  msgExpr,
 				Function: method,
+				LitPos:   litPos,
+				LitEnd:   litEnd,
 			}
 		}
 	}
@@ -132,11 +136,13 @@ func extractFromStdLog(call *ast.CallExpr, pass *analysis.Pass) *LogCall {
 	method := selExpr.Sel.Name
 
 	if len(call.Args) > 0 {
-		if msgExpr := getStringLiteral(call.Args[0]); msgExpr != "" {
+		if msgExpr, litPos, litEnd := getStringLiteral(call.Args[0]); msgExpr != "" {
 			return &LogCall{
 				Pos:      call.Pos(),
 				Message:  msgExpr,
 				Function: method,
+				LitPos:   litPos,
+				LitEnd:   litEnd,
 			}
 		}
 	}
@@ -145,12 +151,12 @@ func extractFromStdLog(call *ast.CallExpr, pass *analysis.Pass) *LogCall {
 }
 
 // Получение строкового литерала из выражения
-func getStringLiteral(expr ast.Expr) string {
+func getStringLiteral(expr ast.Expr) (string, token.Pos, token.Pos) {
 	lit, ok := expr.(*ast.BasicLit)
 	if !ok || lit.Kind != token.STRING {
-		return ""
+		return "", 0, 0
 	}
 
-	// Удаляем кавычки
-	return strings.Trim(lit.Value, `"`)
+	// Удаляем кавычки и возвращаем позиции литерала (включая кавычки)
+	return strings.Trim(lit.Value, `"`), lit.Pos(), lit.End()
 }
